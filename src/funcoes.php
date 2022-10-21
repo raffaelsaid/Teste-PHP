@@ -4,6 +4,12 @@ namespace SRC;
 
 class Funcoes
 {
+
+    private $ano;
+    private $numero;
+    private $array = array();
+    private $array1 = array();
+    private $numeroExclusao;
     /*
 
     Desenvolva uma função que receba como parâmetro o ano e retorne o século ao qual este ano faz parte. O primeiro século começa no ano 1 e termina no ano 100, o segundo século começa no ano 101 e termina no 200.
@@ -14,19 +20,24 @@ class Funcoes
 	Ano 1700 = século 17
 
      * */
-    public function SeculoAno(int $ano): int {
-        
+    public function seculoAno(int $ano)
+    {
+
+        $this->ano = $ano;
     }
 
-    
-	
-	
-	
-	
-	
-	
-	
-	/*
+    public function obterSeculo()
+    {
+        if ($this->ano == 1) {
+            $seculo = 1;
+        } elseif ($this->ano < 1) {
+            echo "Século não pode ser negativo<br>" ;
+        } else {
+            $seculo = (int)(($this->ano - 1) / 100) + 1;
+            echo $seculo . "<br>";
+        }
+    }
+    /*
 
     Desenvolva uma função que receba como parâmetro um número inteiro e retorne o numero primo imediatamente anterior ao número recebido
 
@@ -36,18 +47,36 @@ class Funcoes
     Número = 29 resposta = 23
 
      * */
-    public function PrimoAnterior(int $numero): int {
-        
+    public function primoAnterior(int $numero)
+    {
+        $this->numero = $numero;
     }
 
+    public function obterNumeroPrimo()
+    {
+        $j = 2;
+        $numeroPrimo = '';
 
+        while ($j < $this->numero) {
 
+            $i = 2;
+            $primo = 1;
 
+            while ($i < $j) {
+                if ($j % $i == 0) {
+                    $primo = 0;
+                    break;
+                }
+                $i++;
+            }
+            if ($primo) {
+                $numeroPrimo = $j;
+            }
+            $j++;
+        }
 
-
-
-
-
+        echo $numeroPrimo . "<br>";
+    }
 
     /*
 
@@ -65,16 +94,28 @@ class Funcoes
 	resposta = 25
 
      * */
-    public function SegundoMaior(array $arr): int {
-        
+    public function segundoMaior(array $arr)
+    {
+        $this->array = $arr;
     }
-	
-	
-	
-	
-	
-	
-	
+
+    public function obterSegundoMaiorNumero()
+    {
+        $matriz = $this->array;
+        $maior = $matriz[0][0];
+        $segundoMaior = $maior;
+
+        for ($i = 0; $i < count($matriz); $i++) {
+            for ($j = 0; $j < 3; $j++) {
+                if ($matriz[$i][$j] > $maior) {
+                    $segundoMaior = $maior;
+                    $maior = $matriz[$i][$j];
+                }
+            }
+        }
+
+        echo $segundoMaior . "<br>";
+    }
 
     /*
    Desenvolva uma função que receba como parâmetro um array de números inteiros e responda com TRUE or FALSE se é possível obter uma sequencia crescente removendo apenas um elemento do array.
@@ -105,8 +146,44 @@ class Funcoes
     [3, 5, 67, 98, 3] true
 
      * */
-    
-	public function SequenciaCrescente(array $arr): boolean {
+
+    public function sequenciaCrescente(array $arr)
+    {
+        $this->array1 = $arr;
+    }
+
+    public function obterSequeciaCrescente()
+    {
+        $matriz = $this->array1;
+
+        $key = array_search($this->numeroExclusao, $matriz, true);
+
+        if ($key !== false) {
+            unset($matriz[$key]);
+        }
+        $ordenado = $matriz;
+        sort($ordenado);
+
+        $repetido = array_count_values($matriz);
+
+        foreach ($repetido as $key => $value) {
+            if ($value > 1) {
+                return false;
+            }
+            else {
+                if (array_values($matriz) == array_values($ordenado)) {
         
+                    return true;
+    
+                } else {
+                    return false;
+                }
+            }
+        }
+    }
+
+    public function excluirNumero($numeroExclusao)
+    {
+        $this->numeroExclusao = $numeroExclusao;
     }
 }
